@@ -1,29 +1,43 @@
+let display = document.querySelector('#show_time');
+let [hours, minutes, seconds] = [0, 0, 0];
+let watchStart = document.querySelector('#watchStart');
+let stopBtn = document.querySelector('#stopBtn');
+let resetBtn = document.querySelector('#resetBtn');
+let intervalId = null;
 
-let display = document.querySelector('#show_time')
-let [hours, second, minute] = [0, 0, 0]
-let watchStart=document.querySelector('#watchStart')
-let invlidTime=null;
 const stopWatch = () => {
-    second++;
-    if (second == 60) {
-        second = 0;
-        minute++; 
-        if (minute == 60) {
-        minute = 0;
-        hours++;
+    seconds++;
+    if (seconds == 60) {
+        seconds = 0;
+        minutes++;
+        if (minutes == 60) {
+            minutes = 0;
+            hours++;
+        }
     }
-    }
-   
+
     let h = hours < 10 ? '0' + hours : hours;
-    let m = minute < 10 ? '0' + minute : minute;
-    let s = second < 10 ? '0' + second : second;
+    let m = minutes < 10 ? '0' + minutes : minutes;
+    let s = seconds < 10 ? '0' + seconds : seconds;
 
     display.innerHTML = `${h}:${m}:${s}`;
 }
 
-watchStart.addEventListener('click',() =>{
-    if(!invlidTime){
-        setInterval(stopWatch,1000)
+watchStart.addEventListener('click', () => {
+    if (!intervalId) {
+        intervalId = setInterval(stopWatch, 1000);
     }
+});
+
+stopBtn.addEventListener('click', () => {
+    clearInterval(intervalId);
+    intervalId = null; // Reset the interval ID
+});
+
+resetBtn.addEventListener('click', ()=>{
+    clearInterval(intervalId);
+    intervalId = null;
+ [hours, minutes, seconds] = [0, 0, 0];
+ display.innerHTML="00:00:00"
+
 })
-// watchStart();
